@@ -1,4 +1,5 @@
 import logo from './logo.svg';
+import Gradient from './Gradient.png';
 import './App.css';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
@@ -10,7 +11,19 @@ function App() {
   const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET;
   let spotAuthURL = 'https://accounts.spotify.com/authorize?';
   let spotTokenURL = 'https://accounts.spotify.com/api/token';
-  let accToken = "";
+  let [accToken, setAccToken] = useState(""); 
+
+  useEffect(() => {
+    if (window.location.search.length > 0) {
+      const result = handleRedirect();
+      setAccToken(result)
+    } if (accToken) {
+      console.log('made it to calling API time. here is the token: ', accToken)
+      getArtist();
+    } else {
+      console.log("probs an async issue!"); 
+    }
+  }, [])
 
   function generateRandomString(length) {
     let text = '';
@@ -96,45 +109,49 @@ function App() {
     getAPI(endpoint);
   }
 
-  const onPageLoad = async () => {
-    if (window.location.search.length > 0) {
-      accToken = await handleRedirect();
+  // const onPageLoad = async () => {
+  //   if (window.location.search.length > 0) {
+  //     const result = await handleRedirect();
   
-      if (accToken) {
-        console.log('made it to calling API time. here is the token: ', accToken)
-        getArtist();
-      } else {
-        console.log("probs an async issue!"); 
-        // show some components/elements if accToken vs not. 
-      }
-    }
-  }
+  //     if (accToken) {
+  //       console.log('made it to calling API time. here is the token: ', accToken)
+  //       getArtist();
+  //     } else {
+  //       console.log("probs an async issue!"); 
+  //       // show some components/elements if accToken vs not. 
+  //     }
+  //   }
+  // }
 
-  onPageLoad();
+  // onPageLoad();
 
 
 
   return (
     <div className="App">
       <header className="App-header">
-        {/* <img src={logo} className="App-logo" alt="logo" /> */}
+        {/* <img src={Gradient} className="App-logo" alt="logo" /> */}
         <h1>Go DJ!</h1>
         <h3>(That's my DJ)</h3>
-        <p>
-          This application takes in your preferences and creates an easy-to-mix playlist
-          for you to start your DJ journey! 
-        </p>
-        {/* {<SpotifyLogin></SpotifyLogin>} */}
-        <a
-          className="Login-link"
-          href={spotAuthURL}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Login to Spotify
-        
-        </a>
       </header>
+      <main className="main-page-body">
+          <p>
+            This application takes in your preferences and creates an easy-to-mix playlist
+            for you to start your DJ journey! 
+          </p>
+          {/* {<SpotifyLogin></SpotifyLogin>} */}
+          <button href={spotAuthURL} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded focus:outline-none focus:shadow-outline" type="button">Login to Spotify</button>
+          <a
+            className="Login-link bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded focus:outline-none focus:shadow-outline"
+            href={spotAuthURL}
+            target="_blank"
+            rel="noreferrer"
+            type="button"
+          >
+            Login to Spotify
+          
+          </a>
+      </main>
     </div>
   );
 }
