@@ -1,131 +1,69 @@
-import logo from './logo.svg';
-import Gradient from './Gradient.png';
 import './App.css';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import SpotifyLogin from './components/SpotifyLogin';
+import SettingForm from './components/SettingForm';
+import SettingButton from './components/SettingButton';
+
+const SETTING_OPTIONS = ["House Party", "Club", "Dinner Party", "Sad Girl Hours"]
 
 function App() {
-  const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
-  const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
-  const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET;
-  let spotAuthURL = 'https://accounts.spotify.com/authorize?';
-  let spotTokenURL = 'https://accounts.spotify.com/api/token';
-  let [accToken, setAccToken] = useState(""); 
-
-  useEffect(() => {
-    if (window.location.search.length > 0) {
-      const result = handleRedirect();
-      setAccToken(result)
-    } if (accToken) {
-      console.log('made it to calling API time. here is the token: ', accToken)
-      getArtist();
-    } else {
-      console.log("probs an async issue!"); 
-    }
-  }, [])
-
-  function generateRandomString(length) {
-    let text = '';
-    let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-    for (let i = 0; i < length; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-  }
-
-  let state = generateRandomString(16);
-  let scope = 'user-read-private user-read-email user-modify-playback-state user-read-playback-position user-library-read streaming user-read-playback-state user-read-recently-played playlist-read-private';
-  let show_dialog = true;
-  let response_type = 'code';
-  let args = new URLSearchParams({
-    response_type: response_type,
-    client_id: CLIENT_ID,
-    scope: scope,
-    redirect_uri: REDIRECT_URI,
-    state: state,
-    show_dialog: show_dialog
-  });
-  spotAuthURL += args;
-
-  const parseCode = async () => {
-    let code = null;
-    const queryString = window.location.search;
-    if (queryString.length > 0){
-        const urlParams = new URLSearchParams(queryString);
-        code = urlParams.get('code');
-    }
-    console.log('here is our code:', code);
-    return code;
-} 
-  const handleRedirect = async () => {
-    let code = await parseCode();
-    console.log('here is what we pass to get token function:', code);
-    accToken = await getAccessToken(code);
-    console.log('here is our access token: ', accToken);
-    window.history.pushState("","", REDIRECT_URI); //removes extra parameters from url bar
-  }
-
-  const getAccessToken = async (code) => {
-    // console.log('here is the code we are passing in: ', code);
-    let body = {
-      grant_type: 'authorization_code',
-      code: code,
-      redirect_uri: REDIRECT_URI
-      };
-    let headers = {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': 'Basic ' + (btoa(CLIENT_ID + ":" + CLIENT_SECRET))
-    };
-    axios.post(spotTokenURL, body, {headers: headers})
-    .then((response) => {
-      console.log('response:', response);
-      console.log('response data:', response.data);
-      accToken = response.data.access_token;
-      console.log('within post request then section, token is: ', accToken);
-      console.log('made it to calling API time. here is the token: ', accToken);
-    })
-    .catch((error) => {
-      console.log('error:' , error);
-    })
-    console.log('this is what we return from getAT function:', accToken);
-    return accToken;
-  }
-  const getAPI = (url) => {
-    axios.get(url, {headers: {'Authorization': 'Bearer ' + accToken }})
-    .then((response) => {
-      console.log('response:', response);
-      console.log('response data:', response.data);
-    })
-    .catch((error) => {
-      console.log('error:' , error);
-    })
-    
-  }
-  const getArtist = () => {
-    let id = '0TnOYISbd1XYRBk9myaseg';
-    let endpoint = `https://api.spotify.com/v1/artists/${id}`;
-    getAPI(endpoint);
-  }
-
-  // const onPageLoad = async () => {
-  //   if (window.location.search.length > 0) {
-  //     const result = await handleRedirect();
+  const [setting, setSetting] = useState("");
   
-  //     if (accToken) {
-  //       console.log('made it to calling API time. here is the token: ', accToken)
-  //       getArtist();
-  //     } else {
-  //       console.log("probs an async issue!"); 
-  //       // show some components/elements if accToken vs not. 
-  //     }
-  //   }
-  // }
-
-  // onPageLoad();
-
-
+  const updateSetting = (settingOption) => {
+      setSetting(settingOption);
+      console.log(setting);
+    }
+  const settingtoQuery = () => {
+    let settingData = {}
+    if (setting === "House Party") {
+      settingData = {
+        "valence" : .65,
+        "danceability" : .65
+      };
+      console.log("settingData is set on ", setting)
+    } else if (setting === "Dinner Party") {
+      settingData = {
+        "valence" : .55,
+        "danceability" : .5
+      };
+      console.log("settingData is set on ", setting)
+    } else if (setting === "Sad Girl Hours") {
+      settingData = {
+        "valence" : .25,
+        "danceability" : .30
+      };
+      console.log("settingData is set on ", setting)
+    } else if (setting === "Club") {
+      settingData = {
+        "valence" : .70,
+        "danceability" : .70
+      };
+      console.log("settingData is set on ", setting)
+    } else {
+      console.log("issue with setting!");
+    }
+    // how do I want to set this up? I want to return these values so 
+    // that I can eventually combine them to make a whole request body,
+    // which will be an object. so maybe return an onject and then look
+    // up how to iterate over it JS to add each pair to bigger object. 
+    console.log("here is the current value of settingData: ", settingData);
+    return settingData
+  }
+  const quizToQuery = (settingtoQuery) => {
+    //return to this once all query functions are done. not yet passed down.
+    let patchyBody = {};
+    const settingResult = settingtoQuery()
+    for (const [key, value] of Object.entries(settingResult)) {
+        patchyBody[key] = value;
+    }
+    console.log(patchyBody)
+  }
+  const showNextForm = (nextFormFunc) => {
+    // what do I want to do here? maybe instead of including this "NEXT" button 
+    // in very form component I should have a separate component I can just call
+    // again and again? 
+  }
 
   return (
     <div className="App">
@@ -140,10 +78,9 @@ function App() {
             for you to start your DJ journey! 
           </p>
           {/* {<SpotifyLogin></SpotifyLogin>} */}
-          <button href={spotAuthURL} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded focus:outline-none focus:shadow-outline" type="button">Login to Spotify</button>
           <a
             className="Login-link bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded focus:outline-none focus:shadow-outline"
-            href={spotAuthURL}
+            href='https://accounts.spotify.com/authorize?'
             target="_blank"
             rel="noreferrer"
             type="button"
@@ -151,6 +88,7 @@ function App() {
             Login to Spotify
           
           </a>
+          <SettingForm setting={setting} settingOptions={SETTING_OPTIONS} updateSetting={updateSetting} settingtoQuery={settingtoQuery}></SettingForm>
       </main>
     </div>
   );
