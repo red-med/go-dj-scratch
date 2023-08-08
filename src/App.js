@@ -1,9 +1,11 @@
 import './App.css';
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import SpotifyLogin from './components/SpotifyLogin';
-import SettingForm from './components/SettingForm';
-import SettingButton from './components/SettingButton';
+
+const SettingForm = lazy(() => import('./components/SettingForm'));
+const SettingButton = lazy(() => import('./components/SettingButton'));
+
 
 const SETTING_OPTIONS = ["House Party", "Club", "Dinner Party", "Sad Girl Hours"]
 
@@ -63,6 +65,7 @@ function App() {
     // what do I want to do here? maybe instead of including this "NEXT" button 
     // in very form component I should have a separate component I can just call
     // again and again? 
+    console.log("I'll put this here for now");
   }
 
   return (
@@ -88,7 +91,11 @@ function App() {
             Login to Spotify
           
           </a>
+          <Suspense fallback={<p>Loading...</p>}>
+          <h2>First Form!</h2>
           <SettingForm setting={setting} settingOptions={SETTING_OPTIONS} updateSetting={updateSetting} settingtoQuery={settingtoQuery}></SettingForm>
+        </Suspense>
+          
       </main>
     </div>
   );
