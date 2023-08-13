@@ -15,7 +15,6 @@ const SettingButton = ({setting, settingOption, updateSetting}) => {
 //setting and setSetting wil be handled as state in App but for now we will put it here. 
 
     
-    
 
     return (
         <div className="'DJ_setting_button'">

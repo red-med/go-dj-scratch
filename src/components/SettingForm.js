@@ -12,7 +12,7 @@ const SettingForm = ({setting, settingtoQuery, settingOptions, updateSetting, sh
 
     return (
         <div className="'DJ_setting_form'">
-            <p>What's the occasion for your set? Please choose one.</p>
+            <p>Which of the following best describes the occasion for your set? Please choose one.</p>
             {settingButtonComponents}
             <p onClick={() => {settingtoQuery();}}>Next</p> 
             {/* set up hovering styling for the word "Next" so it looks like a button */}

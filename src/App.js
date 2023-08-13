@@ -4,18 +4,53 @@ import React, { useState, useEffect, Suspense, lazy } from 'react';
 import SpotifyLogin from './components/SpotifyLogin';
 
 const SettingForm = lazy(() => import('./components/SettingForm'));
-const SettingButton = lazy(() => import('./components/SettingButton'));
+const GenreForm = lazy(() => import('./components/GenreForm'));
+const ModeForm = lazy(() => import('./components/ModeForm'))
+const PopForm = lazy(() => import('./components/PopForm'))
 
 
 const SETTING_OPTIONS = ["House Party", "Club", "Dinner Party", "Sad Girl Hours"]
+const GENRE_OPTIONS = ["hip-hop", "pop", "r-n-b", "funk", "afrobeat", "bossanova", "deep-house","house", "indie", "indie-pop", "soul", "reggae", "reggaeton", "rock"]
+const MODE_OPTIONS = ["major", "minor", "both"];
+const POP_OPTIONS = ["obscure", "popular", "mix"];
 
 function App() {
   const [setting, setSetting] = useState("");
+  const [genres, setGenres] = useState("");
+  const [mode, setMode] = useState(0);
+  const [popularity, setPopularity] = useState(0);
   
   const updateSetting = (settingOption) => {
       setSetting(settingOption);
       console.log(setting);
     }
+
+  const updateGenre = (genreSelected) => {
+    if (genres) {
+      setGenres(genres + ',' + genreSelected);
+    } else {
+      setGenres(genreSelected);
+    }
+      setGenres(genres + ',' + genreSelected);
+      console.log(genres);
+      
+  }  
+  const updateMode = (selection) => {
+    setMode(selection);
+    console.log(selection);
+    console.log(mode);
+  }
+  const updatePop = (selection) => {
+    if (selection === "obscure") {
+      setPopularity(0.3)
+    } else if (selection === "popular") {
+      setPopularity(0.7);
+    } else {
+      setPopularity(0.5)
+    }
+    console.log(selection);
+    console.log(popularity)
+  }
   const settingtoQuery = () => {
     let settingData = {}
     if (setting === "House Party") {
@@ -52,13 +87,19 @@ function App() {
     console.log("here is the current value of settingData: ", settingData);
     return settingData
   }
+  const genretoQuery = () => {
+    //maybe not needed?
+  }
   const quizToQuery = (settingtoQuery) => {
     //return to this once all query functions are done. not yet passed down.
     let patchyBody = {};
-    const settingResult = settingtoQuery()
+    const settingResult = settingtoQuery();
     for (const [key, value] of Object.entries(settingResult)) {
         patchyBody[key] = value;
     }
+    patchyBody["genre_seeds"] = genres;
+    patchyBody["max_mode"] = mode;
+    patchyBody["popularity"] = popularity;
     console.log(patchyBody)
   }
   const showNextForm = (nextFormFunc) => {
@@ -81,7 +122,7 @@ function App() {
             for you to start your DJ journey! 
           </p>
           {/* {<SpotifyLogin></SpotifyLogin>} */}
-          <a
+          {/* <a
             className="Login-link bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded focus:outline-none focus:shadow-outline"
             href='https://accounts.spotify.com/authorize?'
             target="_blank"
@@ -90,11 +131,27 @@ function App() {
           >
             Login to Spotify
           
-          </a>
+          </a> */}
           <Suspense fallback={<p>Loading...</p>}>
-          <h2>First Form!</h2>
-          <SettingForm setting={setting} settingOptions={SETTING_OPTIONS} updateSetting={updateSetting} settingtoQuery={settingtoQuery}></SettingForm>
-        </Suspense>
+            <h2>First Form!</h2>
+            <SettingForm setting={setting} settingOptions={SETTING_OPTIONS} updateSetting={updateSetting} settingtoQuery={settingtoQuery}></SettingForm>
+          </Suspense>
+
+          <Suspense fallback={<p>Loading...</p>}>
+            <h2> Second Form!</h2>
+            <GenreForm genres={genres} genreOptions={GENRE_OPTIONS} updateGenre={updateGenre} genretoQuery={genretoQuery}></GenreForm>
+          </Suspense>
+
+          <Suspense fallback={<p>Loading...</p>}>
+            <h2> Third Form!</h2>
+            <ModeForm mode={mode} modeOptions={MODE_OPTIONS} updateGenre={updateMode}></ModeForm>
+          </Suspense>
+
+          <Suspense fallback={<p>Loading...</p>}>
+            <h2> Fourth Form!</h2>
+            <PopForm popularity={popularity} popOptions={POP_OPTIONS} updatePop={updatePop}></PopForm>
+          </Suspense>
+
           
       </main>
     </div>
