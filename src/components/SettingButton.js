@@ -18,7 +18,7 @@ const SettingButton = ({setting, settingOption, updateSetting}) => {
 
     return (
         <div className="'DJ_setting_button'">
-            <button className='DJsetting' onClick={() => {updateSetting(settingOption);}}>{settingOption}</button>
+            <button className='DJsetting' onClick={(event) => {event.preventDefault(); updateSetting(settingOption);}}>{settingOption}</button>
         </div>
     );
 };

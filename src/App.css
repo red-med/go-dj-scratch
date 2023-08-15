@@ -66,3 +66,8 @@ p {
   justify-content: center;
   font-size: calc(10px + 2vmin);
 }
+
+button {
+  /* color: bisque; */
+  background-color: rgb(133, 208, 211);
+}

@@ -9,7 +9,7 @@ const PopButton = ({ popOption, updatePop }) => {
 
     return (
         <div className="popularity_button">
-            <button className='DJpop' onClick={() => {updatePop(popOption);}}>{popOption}</button>
+            <button className='DJpop' onClick={(event) => {event.preventDefault(); updatePop(popOption);}}>{popOption}</button>
         </div>
     );
 }

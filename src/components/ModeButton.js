@@ -9,7 +9,7 @@ const ModeButton = ({ modeOption, updateMode }) => {
 
     return (
         <div className="mode_button">
-            <button className='DJmodes' onClick={() => {updateMode(modeOption);}}>{modeOption}</button>
+            <button className='DJmodes' onClick={(event) => {event.preventDefault(); updateMode(modeOption);}}>{modeOption}</button>
         </div>
     );
 }

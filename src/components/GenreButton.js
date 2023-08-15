@@ -9,7 +9,7 @@ const GenreButton = ({ genreOption, updateGenre }) => {
 
     return (
         <div className="genre_button">
-            <button className='DJgenres' onClick={() => {updateGenre(genreOption);}}>{genreOption}</button>
+            <button className='DJgenres' onClick={(event) => {event.preventDefault(); updateGenre(genreOption);}}>{genreOption}</button>
         </div>
     );
 }
