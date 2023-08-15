@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import SpotifyLogin from './components/SpotifyLogin';
 import SongRecc from './components/SongRecc';
+import Playlist from './components/Playlist';
 
 const SettingForm = lazy(() => import('./components/SettingForm'));
 const GenreForm = lazy(() => import('./components/GenreForm'));
@@ -16,13 +17,15 @@ const MODE_OPTIONS = ["major", "minor", "both"];
 const POP_OPTIONS = ["obscure", "popular", "mix"];
 
 function App() {
-  const [DJName, setDJName] = useState("");
+  const [DJName, setDJName] = useState();
   const [DJData, setDJData] = useState([]);
-  const [setting, setSetting] = useState("");
+  const [setting, setSetting] = useState();
   const [genres, setGenres] = useState(null);
-  const [mode, setMode] = useState(0);
+  const [mode, setMode] = useState();
   const [popularity, setPopularity] = useState();
   const [reccData, setReccData] = useState([]);
+  const [playlistData, setPlaylistData] = useState([]);
+  const [patchyBody, setPatchyBody] = useState({});
 
   const handleName = (event) => {
     setDJName(event.target.value)
@@ -86,34 +89,34 @@ function App() {
     if (setting === "House Party") {
       settingData = {
         "valence" : .65,
-        "danceability" : .65
+        "danceability" : .65,
+        "energy" : .70
       };
       console.log("settingData is set on ", setting)
     } else if (setting === "Dinner Party") {
       settingData = {
-        "valence" : .55,
-        "danceability" : .5
+        "valence" : .6,
+        "danceability" : .5,
+        "energy" : .6
       };
       console.log("settingData is set on ", setting)
     } else if (setting === "Sad Girl Hours") {
       settingData = {
         "valence" : .25,
-        "danceability" : .30
+        "danceability" : .30,
+        "energy" : .25
       };
       console.log("settingData is set on ", setting)
     } else if (setting === "Club") {
       settingData = {
         "valence" : .70,
-        "danceability" : .70
+        "danceability" : .70,
+        "energy" : .90
       };
       console.log("settingData is set on ", setting)
     } else {
       console.log("issue with setting!");
     }
-    // how do I want to set this up? I want to return these values so 
-    // that I can eventually combine them to make a whole request body,
-    // which will be an object. so maybe return an onject and then look
-    // up how to iterate over it JS to add each pair to bigger object. 
     console.log("here is the current value of settingData: ", settingData);
     return settingData
   }
@@ -123,18 +126,19 @@ function App() {
   const quizToQuery = async () => {
     //return to this once all query functions are done. not yet passed down.
     
-    let patchyBody = {};
+    let firstQuery = {}
     const settingResult = settingtoQuery();
     for (const [key, value] of Object.entries(settingResult)) {
-        patchyBody[key] = value;
+        firstQuery[key] = value;
     }
-    patchyBody["market"]="US";
-    patchyBody["limit"] = 1;
-    patchyBody["seed_genres"] = genres;
-    patchyBody["max_mode"] = mode;
-    patchyBody["popularity"] = popularity;
+    firstQuery["market"]="US";
+    firstQuery["limit"] = 1;
+    firstQuery["seed_genres"] = genres;
+    firstQuery["max_mode"] = mode;
+    firstQuery["popularity"] = popularity;
+    setPatchyBody(firstQuery);
     console.log(patchyBody);
-    return (axios.patch(`http://127.0.0.1:5000/start1/${DJData.id}`, patchyBody)
+    await axios.patch(`http://127.0.0.1:5000/start1/${DJData.id}`, firstQuery)
       .then((result) => {
         console.log(result.data);
         setReccData(result.data);
@@ -142,9 +146,48 @@ function App() {
       })
       .catch((err) => {
         console.log(err)
-      }))
+      })
   } 
 
+  const handleReccResponse = (selection) => {
+    if (selection === 1) {
+      quizToPlaylist(reccData.song_id);
+      return (<p> Great! We will use this track's data to get the best playlist for you.</p>)
+    } else if (selection === 0) {
+      quizToQuery();
+      return (
+        <div>
+        <p> Okay, how about this one? </p> 
+        <SongRecc reccData={reccData} handleReccResponse={handleReccResponse}></SongRecc>
+        </div>)
+    }
+  }  
+
+  const quizToPlaylist = async (songID) => {
+    
+    const newPatchyBody = {...patchyBody};
+    newPatchyBody["limit"] = 10;
+    newPatchyBody["seed_tracks"] = songID;
+    console.log(newPatchyBody);
+    setPatchyBody(newPatchyBody);
+    await axios.patch(`http://127.0.0.1:5000/start1/${DJData.id}`, newPatchyBody)
+      .then((result) => {
+        console.log("here is our result.data: ", result.data);
+        setPlaylistData(result.data);
+        console.log("playlistData:", playlistData);
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  
+    console.log("playlistData:", playlistData);
+  }
+  // const renderPlaylist = () => {
+  //   return playlistData.map(trackInfo => {
+
+  //   })
+  // }
+  
   const showNextForm = (nextFormFunc) => {
     // what do I want to do here? maybe instead of including this "NEXT" button 
     // in very form component I should have a separate component I can just call
@@ -166,9 +209,9 @@ function App() {
           </p>
         
           <form onSubmit={createDJ}>
-            <label>Enter your DJ name to start: </label>
+            <p>Enter your DJ name to start: </p>
             <input type="text" onChange={handleName} name="name"></input>
-            <button type={"submit"}>Submit</button>
+            <button className="name_submit_button" type={"submit"}>Submit</button>
           </form>
           
           <div>
@@ -191,27 +234,32 @@ function App() {
               <SettingForm setting={setting} settingOptions={SETTING_OPTIONS} updateSetting={updateSetting} settingtoQuery={settingtoQuery}></SettingForm>
             </Suspense>
 
-            <Suspense fallback={<p>Loading...</p>}>
+            {setting && (<Suspense fallback={<p>Loading...</p>}>
               <h2> Second Form!</h2>
               <GenreForm genres={genres} genreOptions={GENRE_OPTIONS} updateGenre={updateGenre} genretoQuery={genretoQuery}></GenreForm>
-            </Suspense>
+            </Suspense>)}
 
-            <Suspense fallback={<p>Loading...</p>}>
+            {genres && (<Suspense fallback={<p>Loading...</p>}>
               <h2> Third Form!</h2>
               <ModeForm mode={mode} modeOptions={MODE_OPTIONS} updateMode={updateMode}></ModeForm>
-            </Suspense>
+            </Suspense>)}
 
-            <Suspense fallback={<p>Loading...</p>}>
+            {(mode === 1 || mode === 0) && (<Suspense fallback={<p>Loading...</p>}>
               <h2> Fourth Form!</h2>
               <PopForm popularity={popularity} popOptions={POP_OPTIONS} updatePop={updatePop}></PopForm>
-            </Suspense>
-            <button type={"submit"}>Submit</button>
+            </Suspense>)}
+            {popularity && (<button type={"submit"}>Submit</button>)}
           </form>
 
           {reccData.artist ? (<Suspense fallback={<p>Loading suggestion...</p>}>
               <h2> RECC Form!</h2>
-              <SongRecc reccData={reccData}></SongRecc>
-            </Suspense>) : <p>something is wrong</p>}
+              <SongRecc reccData={reccData} handleReccResponse={handleReccResponse}></SongRecc>
+            </Suspense>) : <p></p>}
+          
+          {(playlistData.length > 0) && (<Suspense fallback={<p>Loading suggestions...</p>}>
+              <h2> RECC Form!</h2>
+              <Playlist playlistData={playlistData}></Playlist>
+            </Suspense>)}
 
           
       </main>

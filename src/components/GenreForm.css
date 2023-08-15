@@ -1,0 +1,9 @@
+.all_genre_buttons {
+    display: grid;
+    grid-template: 100px 100px / 300px 100px 50%;
+}
+
+button {
+    grid-column: auto / span 1;
+    grid-row: auto / span 1;
+}

@@ -21,7 +21,7 @@ background: linear-gradient(342deg, rgba(131,58,180,1) 0%, rgba(252,176,69,1) 10
 .App-header {
   /* background: rgb(36, 125, 54);
   background: radial-gradient(circle, rgb(67, 164, 86) 0%, rgb(33, 69, 40) 100%); */
-  min-height: 40vh;
+  min-height: 30vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -70,4 +70,11 @@ p {
 button {
   /* color: bisque; */
   background-color: rgb(133, 208, 211);
+  width: 150px;
+  height: 60px;
+}
+
+.name_submit_button {
+  width: 70px;
+  height: 30px;
 }

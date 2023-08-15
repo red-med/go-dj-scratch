@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import GenreButton from './GenreButton';
+import './GenreForm.css';
 
 const GenreForm = ({genres, genreOptions, updateGenre, genretoQuery}) => {
 
@@ -13,7 +14,9 @@ const GenreForm = ({genres, genreOptions, updateGenre, genretoQuery}) => {
     return (
         <div className="'DJ_genre_form'">
             <p>Which genres do you want to mix? Choose up to three.</p>
-            {genreButtonComponents}
+            <div className='all_genre_buttons'>
+                {genreButtonComponents}
+            </div>
             <p onClick={() => {genretoQuery();}}>Next</p> 
         {/* set up hovering styling for the word "Next" so it looks like a button */}
     </div>
