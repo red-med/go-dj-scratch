@@ -16,7 +16,7 @@ const Playlist = ({playlistData}) => {
         }
     return ( 
     
-        <div>
+        <div className='track'>
             {trackInfo.album_art && <img src={art} width={trackInfo.album_art.width} height={trackInfo.album_art.height} alt="Album Art"></img>}
             <p>Suggested Track: {trackInfo.song_title} by {trackInfo.artist}</p>
                 {trackInfo.song_preview && <button onClick={play}>Play Preview</button>}

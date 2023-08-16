@@ -1,7 +1,8 @@
 import './App.css';
+import { GoogleFont } from 'react-google-fonts';
 import axios from 'axios';
-import React, { useState, useEffect, Suspense, lazy } from 'react';
-import SpotifyLogin from './components/SpotifyLogin';
+import React, { useState, Suspense, lazy } from 'react';
+// import SpotifyLogin from './components/SpotifyLogin';
 import SongRecc from './components/SongRecc';
 import Playlist from './components/Playlist';
 
@@ -18,7 +19,7 @@ const POP_OPTIONS = ["obscure", "popular", "mix"];
 
 function App() {
   const [DJName, setDJName] = useState();
-  const [DJData, setDJData] = useState([]);
+  const [DJData, setDJData] = useState();
   const [setting, setSetting] = useState();
   const [genres, setGenres] = useState(null);
   const [mode, setMode] = useState();
@@ -200,22 +201,24 @@ function App() {
       <header className="App-header">
         {/* <img src={Gradient} className="App-logo" alt="logo" /> */}
         <h1>Go DJ!</h1>
-        <h3>(That's my DJ)</h3>
+        <h2>(That's my DJ)</h2>
       </header>
       <main className="main-page-body">
-          <p>
+          <p className='info'>
             This application takes in your preferences and creates an easy-to-mix playlist
             for you to start your DJ journey! 
           </p>
         
           <form onSubmit={createDJ}>
             <p>Enter your DJ name to start: </p>
-            <input type="text" onChange={handleName} name="name"></input>
+            <div className='name_input'>
+            <input className="name-textbox" type="text" onChange={handleName} name="name"></input>
             <button className="name_submit_button" type={"submit"}>Submit</button>
+            </div>
           </form>
           
           <div>
-            <p>Your input: {DJName}</p>
+            <p></p>
           </div>
           {/* {<SpotifyLogin></SpotifyLogin>} */}
           {/* <a
@@ -228,38 +231,42 @@ function App() {
             Login to Spotify
           
           </a> */}
-          <form onSubmit={(event) => {event.preventDefault(); quizToQuery();}}>
+          {DJData && (
+          <form className="pref_questions" onSubmit={(event) => {event.preventDefault(); quizToQuery();}}>
             <Suspense fallback={<p>Loading...</p>}>
-              <h2>First Form!</h2>
+              <h2> </h2>
               <SettingForm setting={setting} settingOptions={SETTING_OPTIONS} updateSetting={updateSetting} settingtoQuery={settingtoQuery}></SettingForm>
             </Suspense>
 
             {setting && (<Suspense fallback={<p>Loading...</p>}>
-              <h2> Second Form!</h2>
+              <h2> </h2>
               <GenreForm genres={genres} genreOptions={GENRE_OPTIONS} updateGenre={updateGenre} genretoQuery={genretoQuery}></GenreForm>
             </Suspense>)}
 
             {genres && (<Suspense fallback={<p>Loading...</p>}>
-              <h2> Third Form!</h2>
+              <h2> </h2>
               <ModeForm mode={mode} modeOptions={MODE_OPTIONS} updateMode={updateMode}></ModeForm>
             </Suspense>)}
 
             {(mode === 1 || mode === 0) && (<Suspense fallback={<p>Loading...</p>}>
-              <h2> Fourth Form!</h2>
+              <h2> </h2>
               <PopForm popularity={popularity} popOptions={POP_OPTIONS} updatePop={updatePop}></PopForm>
             </Suspense>)}
             {popularity && (<button type={"submit"}>Submit</button>)}
-          </form>
+          </form>)}
 
           {reccData.artist ? (<Suspense fallback={<p>Loading suggestion...</p>}>
-              <h2> RECC Form!</h2>
+              <h2> </h2>
               <SongRecc reccData={reccData} handleReccResponse={handleReccResponse}></SongRecc>
             </Suspense>) : <p></p>}
-          
+          <div>
           {(playlistData.length > 0) && (<Suspense fallback={<p>Loading suggestions...</p>}>
-              <h2> RECC Form!</h2>
-              <Playlist playlistData={playlistData}></Playlist>
+              <h2> Here is your playlist: </h2>
+              <div className='all_playlist_tracks'>
+                <Playlist playlistData={playlistData}></Playlist>
+              </div>
             </Suspense>)}
+          </div>
 
           
       </main>

@@ -1,32 +1,26 @@
+
 .App {
   text-align: center;
   background-color: black;
   /* background: rgb(36, 125, 54);
   background: radial-gradient(circle, rgb(67, 164, 86) 0%, rgb(33, 69, 40) 100%); */
-  background: rgb(131,58,180);
-background: linear-gradient(342deg, rgba(131,58,180,1) 0%, rgba(252,176,69,1) 100%);
+  
+
 } 
 
-/* .App-logo {
-  height: 0vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-} */
 
 .App-header {
-  /* background: rgb(36, 125, 54);
-  background: radial-gradient(circle, rgb(67, 164, 86) 0%, rgb(33, 69, 40) 100%); */
-  min-height: 30vh;
-  display: flex;
-  flex-direction: column;
+  
+  background: rgb(131,58,180);
+  background: linear-gradient(342deg, rgba(252,176,69,1) 10%, rgba(131,58,180,1) 100%);
+  min-height: 25vh;
+  display: grid;
+  grid-template: 100px 50px / 300px;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
+  border-style: solid;
+  border-color: whitesmoke;
   /* color: white; */
 }
 
@@ -34,16 +28,16 @@ background: linear-gradient(342deg, rgba(131,58,180,1) 0%, rgba(252,176,69,1) 10
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 h1 {
   font-size: 72px;
+  background: -webkit-linear-gradient(#292828, #292ba9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: "Permanent Marker";
+}
+
+h2 {
+  font-style: italic;
   background: -webkit-linear-gradient(#292828, #292ba9);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -56,9 +50,12 @@ p {
   -webkit-text-fill-color: transparent;
 }
 
+.info {
+  width: 70%;
+}
 .main-page-body {
-  /* background: rgb(36, 125, 54);
-  background: radial-gradient(circle, rgb(24, 83, 36) 0%, rgb(67, 164, 86) 100%); */
+  background: rgb(131,58,180);
+  background: linear-gradient(342deg, rgba(131,58,180,1) 0%, rgba(252,176,69,1) 100%);
   min-height: 60vh;
   display: flex;
   flex-direction: column;
@@ -67,14 +64,46 @@ p {
   font-size: calc(10px + 2vmin);
 }
 
+.pref_questions {
+  border-style: solid;
+  border-color: whitesmoke;
+}
+.all_playlist_tracks {
+    display: grid;
+    grid-template: 600px 600px 600px 600px 600px/ 600px 600px;
+    align-items: center;
+    justify-content: center;
+}
+.track {
+  padding: 5px
+}
 button {
   /* color: bisque; */
   background-color: rgb(133, 208, 211);
+
+  font-weight: bolder;
   width: 150px;
   height: 60px;
+  border-radius: 15px;
+  padding: 5px;
+
+}
+.name_input {
+  display: grid;
+  grid-template: 20px/ 300px 70px;
+  align-items: center;
+  justify-content: center;
+
 }
 
+.name_textbox {
+  border: 7px;
+  padding: 5px;
+}
 .name_submit_button {
   width: 70px;
   height: 30px;
+  grid-column: auto / span 1;
+  grid-row: auto / span 1;
+
 }

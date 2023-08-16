@@ -17,7 +17,7 @@ const GenreForm = ({genres, genreOptions, updateGenre, genretoQuery}) => {
             <div className='all_genre_buttons'>
                 {genreButtonComponents}
             </div>
-            <p onClick={() => {genretoQuery();}}>Next</p> 
+            {/* <p onClick={() => {genretoQuery();}}>Next</p>  */}
         {/* set up hovering styling for the word "Next" so it looks like a button */}
     </div>
     );

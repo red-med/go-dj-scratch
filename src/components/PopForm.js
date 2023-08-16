@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import PopButton from './PopButton';
+import './PopForm.css'
 
 const PopForm = ({ popOptions, updatePop}) => {
 
@@ -13,8 +14,10 @@ const PopForm = ({ popOptions, updatePop}) => {
     return (
         <div className="'DJ_pop_form'">
             <p>Do you want to play obscure tracks, crowd favorites, or a bit of each?</p>
-            {popButtonComponents}
-            <p onClick={() => {console.log("hell yeah dawg");}}>Next</p>  
+            <div className='all_pop_buttons'>
+                {popButtonComponents}
+            </div>
+            {/* <p onClick={() => {console.log("hell yeah dawg");}}>Next</p>   */}
         {/* set up hovering styling for the word "Next" so it looks like a button */}
     </div>
     );

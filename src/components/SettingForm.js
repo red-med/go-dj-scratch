@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import SettingButton from './SettingButton';
 import PropTypes from 'prop-types';
+import './SettingForm.css';
 
 const SettingForm = ({setting, settingtoQuery, settingOptions, updateSetting, showNextForm}) => {
     
@@ -13,8 +14,10 @@ const SettingForm = ({setting, settingtoQuery, settingOptions, updateSetting, sh
     return (
         <div className="'DJ_setting_form'">
             <p>Which of the following best describes the occasion for your set? Please choose one.</p>
+            <div className='all_setting_buttons'>
             {settingButtonComponents}
-            <p onClick={() => {settingtoQuery();}}>Next</p> 
+            </div>
+            {/* <p onClick={() => {settingtoQuery();}}>Next</p>  */}
             {/* set up hovering styling for the word "Next" so it looks like a button */}
         </div>
     );
