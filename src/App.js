@@ -35,7 +35,7 @@ function App() {
     event.preventDefault();
     console.log("made it to createDJ");
     const requestBody = {"name": `${DJName}`};
-    axios.post("http://127.0.0.1:5000/start1", requestBody)
+    axios.post("http://127.0.0.1:5000/start", requestBody)
       .then((result) => {
         console.log(result.data);
         setDJData(result.data.DJ);
@@ -139,7 +139,7 @@ function App() {
     firstQuery["popularity"] = popularity;
     setPatchyBody(firstQuery);
     console.log(patchyBody);
-    await axios.patch(`http://127.0.0.1:5000/start1/${DJData.id}`, firstQuery)
+    await axios.patch(`http://127.0.0.1:5000/start/${DJData.id}`, firstQuery)
       .then((result) => {
         console.log(result.data);
         setReccData(result.data);
@@ -171,7 +171,7 @@ function App() {
     newPatchyBody["seed_tracks"] = songID;
     console.log(newPatchyBody);
     setPatchyBody(newPatchyBody);
-    await axios.patch(`http://127.0.0.1:5000/start1/${DJData.id}`, newPatchyBody)
+    await axios.patch(`http://127.0.0.1:5000/start/${DJData.id}`, newPatchyBody)
       .then((result) => {
         console.log("here is our result.data: ", result.data);
         setPlaylistData(result.data);
