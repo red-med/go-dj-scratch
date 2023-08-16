@@ -16,6 +16,7 @@ const SETTING_OPTIONS = ["House Party", "Club", "Dinner Party", "Sad Girl Hours"
 const GENRE_OPTIONS = ["hip-hop", "pop", "r-n-b", "funk", "afrobeat", "bossanova", "deep-house","disco", "house", "indie", "indie-pop", "soul", "reggae", "reggaeton", "rock"]
 const MODE_OPTIONS = ["major", "minor", "both"];
 const POP_OPTIONS = ["obscure", "popular", "mix"];
+const API_URL = "https://go-dj-api.onrender.com/start"
 
 function App() {
   const [DJName, setDJName] = useState();
@@ -35,7 +36,7 @@ function App() {
     event.preventDefault();
     console.log("made it to createDJ");
     const requestBody = {"name": `${DJName}`};
-    axios.post("http://127.0.0.1:5000/start", requestBody)
+    axios.post(`${API_URL}`, requestBody)
       .then((result) => {
         console.log(result.data);
         setDJData(result.data.DJ);
@@ -139,7 +140,7 @@ function App() {
     firstQuery["popularity"] = popularity;
     setPatchyBody(firstQuery);
     console.log(patchyBody);
-    await axios.patch(`http://127.0.0.1:5000/start/${DJData.id}`, firstQuery)
+    await axios.patch(`${API_URL}/${DJData.id}`, firstQuery)
       .then((result) => {
         console.log(result.data);
         setReccData(result.data);
@@ -171,7 +172,7 @@ function App() {
     newPatchyBody["seed_tracks"] = songID;
     console.log(newPatchyBody);
     setPatchyBody(newPatchyBody);
-    await axios.patch(`http://127.0.0.1:5000/start/${DJData.id}`, newPatchyBody)
+    await axios.patch(`${API_URL}/${DJData.id}`, newPatchyBody)
       .then((result) => {
         console.log("here is our result.data: ", result.data);
         setPlaylistData(result.data);
