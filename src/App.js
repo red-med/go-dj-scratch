@@ -1,5 +1,4 @@
 import './App.css';
-import './turntables.webp'
 import { GoogleFont } from 'react-google-fonts';
 import axios from 'axios';
 import React, { useState, useEffect, Suspense, lazy } from 'react';
