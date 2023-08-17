@@ -1,10 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;1,300&display=swap');
 
 .App {
   text-align: center;
-  background-color: black;
+  /* background-color:  rgb(222, 122, 76); */
+  background: linear-gradient(342deg, rgba(131,58,180,1) 0%, rgba(252,176,69,1) 100%);
   /* background: rgb(36, 125, 54);
   background: radial-gradient(circle, rgb(67, 164, 86) 0%, rgb(33, 69, 40) 100%); */
-  
+  font-family: 'Montserrat', sans-serif;
 
 } 
 
@@ -12,15 +15,20 @@
 .App-header {
   
   background: rgb(131,58,180);
-  background: linear-gradient(342deg, rgba(252,176,69,1) 10%, rgba(131,58,180,1) 100%);
-  min-height: 25vh;
+  /* background: radial-gradient(circle, rgba(252,176,69,1) 0%, rgb(222, 122, 76) 70%, rgba(131,58,180,1) 105%); */
+  background: linear-gradient(160deg, rgba(131,58,180,1) 0%, rgba(252,176,69,1) 100%);
+  /* background: linear-gradient(3200deg, rgba(252,176,69,1) 10%, rgb(222, 122, 76) 70%, rgba(131,58,180,1) 115%); */
+  min-height: 50%;
   display: grid;
-  grid-template: 100px 50px / 300px;
+  grid-template: 60% 15% / 80%;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   border-style: solid;
-  border-color: whitesmoke;
+  border-color: rgb(218, 227, 230);
+  border-width: 10px;
+  font-family: 'Permanent Marker', cursive;
+  /* border-radius: 15%; */
   /* color: white; */
 }
 
@@ -29,11 +37,12 @@
 }
 
 h1 {
-  font-size: 72px;
+  font-size: 60px;
   background: -webkit-linear-gradient(#292828, #292ba9);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-family: "Permanent Marker";
+  
 }
 
 h2 {
@@ -41,6 +50,7 @@ h2 {
   background: -webkit-linear-gradient(#292828, #292ba9);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  font-size: ;
 }
 
 p {
@@ -51,26 +61,35 @@ p {
 }
 
 .info {
-  width: 70%;
+  width: 60%;
+  /* height: 150% */
 }
 .main-page-body {
   background: rgb(131,58,180);
   background: linear-gradient(342deg, rgba(131,58,180,1) 0%, rgba(252,176,69,1) 100%);
-  min-height: 60vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
+  /* width: 100%;
+  height: 100%; */
+  background-size: 100%;
+  border-style: solid;
+  border-color: rgb(218, 227, 230);
+  /* border-width: 10px; */
+  border-radius: 5%;
 }
 
 .pref_questions {
   border-style: solid;
   border-color: whitesmoke;
+  border-radius: 15%;
 }
 .all_playlist_tracks {
     display: grid;
-    grid-template: 600px 600px 600px 600px 600px/ 600px 600px;
+    grid-template: 85vh 85vh 85vh 85vh 85vh/ 45% 45%;
     align-items: center;
     justify-content: center;
 }
@@ -80,7 +99,7 @@ p {
 button {
   /* color: bisque; */
   background-color: rgb(133, 208, 211);
-
+  font-family: 'Montserrat', sans-serif;
   font-weight: bolder;
   width: 150px;
   height: 60px;
@@ -88,9 +107,12 @@ button {
   padding: 5px;
 
 }
+button:hover {
+  background-color: #edcde8df;
+}
 .name_input {
   display: grid;
-  grid-template: 20px/ 300px 70px;
+  grid-template: 30%/ 120% 15%;
   align-items: center;
   justify-content: center;
 
@@ -102,7 +124,7 @@ button {
 }
 .name_submit_button {
   width: 70px;
-  height: 30px;
+  height:30px;
   grid-column: auto / span 1;
   grid-row: auto / span 1;
 

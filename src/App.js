@@ -1,7 +1,8 @@
 import './App.css';
+import './turntables.webp'
 import { GoogleFont } from 'react-google-fonts';
 import axios from 'axios';
-import React, { useState, Suspense, lazy } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 // import SpotifyLogin from './components/SpotifyLogin';
 import SongRecc from './components/SongRecc';
 import Playlist from './components/Playlist';
@@ -28,6 +29,21 @@ function App() {
   const [reccData, setReccData] = useState([]);
   const [playlistData, setPlaylistData] = useState([]);
   const [patchyBody, setPatchyBody] = useState({});
+  const [fadeIn, setFadeIn] = useState(false);
+
+  useEffect(() => {
+    setFadeIn(true);
+  }, []);
+
+  const fadeInStyle1 = {
+    opacity: fadeIn ? 1 : 0,
+    transition: 'opacity 1500ms linear'
+  };
+  const fadeInStyle2 = {
+    opacity: fadeIn ? 1 : 0,
+    transition: 'opacity 2500ms linear'
+  };
+  // const font = "'Permanent Marker', cursive";
 
   const handleName = (event) => {
     setDJName(event.target.value)
@@ -200,9 +216,10 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {/* <img src={Gradient} className="App-logo" alt="logo" /> */}
-        <h1>Go DJ!</h1>
-        <h2>(That's my DJ)</h2>
+        
+        <h1 style={fadeInStyle1}>Go DJ!</h1>
+        <h2 style={fadeInStyle2}>(That's my DJ)</h2>
+        
       </header>
       <main className="main-page-body">
           <p className='info'>
@@ -254,6 +271,9 @@ function App() {
               <PopForm popularity={popularity} popOptions={POP_OPTIONS} updatePop={updatePop}></PopForm>
             </Suspense>)}
             {popularity && (<button type={"submit"}>Submit</button>)}
+            <div>
+              <p></p>
+            </div>
           </form>)}
 
           {reccData.artist ? (<Suspense fallback={<p>Loading suggestion...</p>}>

@@ -13,7 +13,7 @@ const SettingForm = ({setting, settingtoQuery, settingOptions, updateSetting, sh
 
     return (
         <div className="'DJ_setting_form'">
-            <p>Which of the following best describes the occasion for your set? Please choose one.</p>
+            <p> Which of the following best describes the occasion for your set? Please choose one. </p>
             <div className='all_setting_buttons'>
             {settingButtonComponents}
             </div>
