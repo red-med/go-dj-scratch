@@ -13,7 +13,7 @@ const PopForm = lazy(() => import('./components/PopForm'))
 
 
 const SETTING_OPTIONS = ["House Party", "Club", "Dinner Party", "Sad Girl Hours"]
-const GENRE_OPTIONS = ["hip-hop", "pop", "r-n-b", "funk", "afrobeat", "bossanova", "deep-house","disco", "house", "indie", "indie-pop", "soul", "reggae", "reggaeton", "rock"]
+const GENRE_OPTIONS = ["hip-hop", "pop", "r-n-b", "funk", "afrobeat", "bossanova", "acoustic", "deep-house","disco", "drum-and-bass", "folk", "house", "indie", "indie-pop", "jazz", "singer-songwriter", "study", "soul", "reggae", "reggaeton", "rock"]
 const MODE_OPTIONS = ["major", "minor", "both"];
 const POP_OPTIONS = ["obscure", "popular", "mix"];
 const API_URL = "https://go-dj-api.onrender.com/start"
